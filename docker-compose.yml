@@ -1,0 +1,27 @@
+services:
+  backend:
+    env_file:
+      - ./backend/.env
+    build: ./backend
+    ports:
+      - "8000:8000"
+    working_dir: /app
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://user:pass@db:5432/radicle_analytics_db
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/app
+  
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=radicle_analytics_db
+      - POSTGRES_USER=admin_user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

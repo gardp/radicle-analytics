@@ -1,0 +1,1 @@
+Documentation for the structure of the app

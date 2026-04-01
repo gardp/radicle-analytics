@@ -24,6 +24,8 @@ class ActionBase(BaseModel):
     action_is_active: Optional[bool] = True
     action_notes: Optional[str] = ""
     feedback: Optional[str] = ""
+    track_id: UUID
+    instruction_id: UUID
     content_id: Optional[UUID] = None
     dependency_action_id: Optional[UUID] = None
 
@@ -40,6 +42,8 @@ class ActionUpdate(BaseModel):
     action_is_active: Optional[bool] = None
     action_notes: Optional[str] = None
     feedback: Optional[str] = None
+    track_id: Optional[UUID] = None
+    instruction_id: Optional[UUID] = None
     content_id: Optional[UUID] = None
     dependency_action_id: Optional[UUID] = None
 

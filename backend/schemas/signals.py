@@ -17,6 +17,9 @@ from .base import TimestampMixin
 class InstagramProfileInsightsBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     reach: Optional[int] = 0
     impressions_count: Optional[int] = 0
     profile_views_count: Optional[int] = 0
@@ -33,6 +36,9 @@ class InstagramProfileInsightsCreate(InstagramProfileInsightsBase):
 class InstagramProfileInsightsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     reach: Optional[int] = None
     impressions_count: Optional[int] = None
     profile_views_count: Optional[int] = None
@@ -53,6 +59,9 @@ class InstagramProfileInsightsResponse(InstagramProfileInsightsBase, TimestampMi
 class InstagramMediaInsightsBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     caption: Optional[str] = None
     media_id: Optional[str] = None
     media_type: Optional[str] = None
@@ -92,6 +101,9 @@ class InstagramMediaInsightsCreate(InstagramMediaInsightsBase):
 class InstagramMediaInsightsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     caption: Optional[str] = None
     media_id: Optional[str] = None
     media_type: Optional[str] = None
@@ -135,6 +147,9 @@ class InstagramMediaInsightsResponse(InstagramMediaInsightsBase, TimestampMixin)
 class InstagramHashtagsBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     hashtag: Optional[str] = None
     raw_payload: Optional[Any] = None
 
@@ -146,6 +161,9 @@ class InstagramHashtagsCreate(InstagramHashtagsBase):
 class InstagramHashtagsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     hashtag: Optional[str] = None
     raw_payload: Optional[Any] = None
 
@@ -161,6 +179,9 @@ class InstagramHashtagsResponse(InstagramHashtagsBase, TimestampMixin):
 class TiktokProfileInsightBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     avatar_url: Optional[str] = None
     bio_description: Optional[str] = None
     profile_deep_link: Optional[str] = None
@@ -179,6 +200,9 @@ class TiktokProfileInsightCreate(TiktokProfileInsightBase):
 class TiktokProfileInsightUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     avatar_url: Optional[str] = None
     bio_description: Optional[str] = None
     profile_deep_link: Optional[str] = None
@@ -201,6 +225,9 @@ class TiktokProfileInsightResponse(TiktokProfileInsightBase, TimestampMixin):
 class TiktokMediaInsightsBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     media_id: Optional[str] = None
     cover_image_url: Optional[str] = None
     video_description: Optional[str] = None
@@ -219,6 +246,9 @@ class TiktokMediaInsightsCreate(TiktokMediaInsightsBase):
 class TiktokMediaInsightsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     media_id: Optional[str] = None
     cover_image_url: Optional[str] = None
     video_description: Optional[str] = None
@@ -241,6 +271,9 @@ class TiktokMediaInsightsResponse(TiktokMediaInsightsBase, TimestampMixin):
 class TwitterXContentInsightsBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     content: Optional[Any] = None
     raw_payload: Optional[Any] = None
 
@@ -252,6 +285,9 @@ class TwitterXContentInsightsCreate(TwitterXContentInsightsBase):
 class TwitterXContentInsightsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     content: Optional[Any] = None
     raw_payload: Optional[Any] = None
 
@@ -267,6 +303,9 @@ class TwitterXContentInsightsResponse(TwitterXContentInsightsBase, TimestampMixi
 class TwitterXPublicMetricsBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     retweet_count: Optional[int] = None
     reply_count: Optional[int] = None
     like_count: Optional[int] = None
@@ -282,6 +321,9 @@ class TwitterXPublicMetricsCreate(TwitterXPublicMetricsBase):
 class TwitterXPublicMetricsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     retweet_count: Optional[int] = None
     reply_count: Optional[int] = None
     like_count: Optional[int] = None
@@ -301,6 +343,9 @@ class TwitterXPublicMetricsResponse(TwitterXPublicMetricsBase, TimestampMixin):
 class TwitterXUserMetricsBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     impressions: Optional[int] = 0
     engagements: Optional[Any] = None
     raw_payload: Optional[Any] = None
@@ -313,6 +358,9 @@ class TwitterXUserMetricsCreate(TwitterXUserMetricsBase):
 class TwitterXUserMetricsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     impressions: Optional[int] = None
     engagements: Optional[Any] = None
     raw_payload: Optional[Any] = None
@@ -329,6 +377,9 @@ class TwitterXUserMetricsResponse(TwitterXUserMetricsBase, TimestampMixin):
 class TwitterXMentionsBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     mentions: Optional[Any] = None
     owner: Optional[Any] = None
     raw_payload: Optional[Any] = None
@@ -341,6 +392,9 @@ class TwitterXMentionsCreate(TwitterXMentionsBase):
 class TwitterXMentionsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     mentions: Optional[Any] = None
     owner: Optional[Any] = None
     raw_payload: Optional[Any] = None
@@ -357,6 +411,9 @@ class TwitterXMentionsResponse(TwitterXMentionsBase, TimestampMixin):
 class YoutubeChannelReportBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     dimensions: Optional[List[str]] = None
     filters: Optional[List[str]] = None
     result: Optional[Any] = None
@@ -370,6 +427,9 @@ class YoutubeChannelReportCreate(YoutubeChannelReportBase):
 class YoutubeChannelReportUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     dimensions: Optional[List[str]] = None
     filters: Optional[List[str]] = None
     result: Optional[Any] = None
@@ -387,6 +447,9 @@ class YoutubeChannelReportResponse(YoutubeChannelReportBase, TimestampMixin):
 class YoutubeContentReportBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     dimensions: Optional[List[str]] = None
     filters: Optional[List[str]] = None
     result: Optional[Any] = None
@@ -400,6 +463,9 @@ class YoutubeContentReportCreate(YoutubeContentReportBase):
 class YoutubeContentReportUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    track_id: Optional[UUID] = None
+    content_id: Optional[UUID] = None
+    platform_id: Optional[UUID] = None
     dimensions: Optional[List[str]] = None
     filters: Optional[List[str]] = None
     result: Optional[Any] = None

@@ -10,6 +10,9 @@ class InstagramProfileInsights(Base, TimestampMixin): # table for instagram prof
     __tablename__ = 'instagram_profile_insights'
     
     insight_id = Column(UUID, primary_key=True)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     reach = Column(Integer, nullable=True, default=0)
     impressions_count = Column(Integer, nullable=True, default=0)
     profile_views_count = Column(Integer, nullable=True, default=0)
@@ -22,6 +25,9 @@ class InstagramMediaInsights(Base, TimestampMixin): # table for instagram media 
     __tablename__ = 'instagram_media_insights'
     
     insight_id = Column(UUID, primary_key=True)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     caption = Column(String, nullable=True)
     media_id = Column(String, nullable=True)
     media_type = Column(String, nullable=True)
@@ -58,6 +64,9 @@ class TiktokProfileInsight(Base, TimestampMixin):
     __tablename__ = 'tiktok_profile_insights'
     
     insight_id = Column(UUID, primary_key=True) #for database reference
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     avatar_url = Column(String, nullable=True, comment="The URL of the TikTok profile avatar")
     bio_description = Column(String, nullable=True, comment="The bio description of the TikTok profile")
     profile_deep_link = Column(String, nullable=True, comment="The link to user's TikTok profile page")
@@ -72,6 +81,9 @@ class TiktokMediaInsights(Base, TimestampMixin):
     __tablename__ = 'tiktok_media_insights'
     
     insight_id = Column(UUID, primary_key=True) #for database reference
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     media_id = Column(String, nullable=True, comment="The ID of the TikTok media")
     cover_image_url = Column(String, nullable=True, comment="A CDN link for the video's cover image. ")
     video_description = Column(String, nullable=True, comment="The description of the video.")
@@ -96,6 +108,9 @@ class InstagramHashtags(Base, TimestampMixin):
     __tablename__ = 'instagram_hashtags'
     
     insight_id = Column(UUID, primary_key=True)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     hashtag = Column(String, nullable=True, comment="The hashtag used in the post")
     raw_payload = Column(JSON, nullable=True, comment="Data returned from the api")
 
@@ -104,6 +119,9 @@ class TwitterXContentInsights(Base, TimestampMixin):
     __tablename__ = 'twitter_x_content_insights'
     
     insight_id = Column(UUID, primary_key=True)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     content = Column(JSON, nullable=True, comment="The content of the post")
     raw_payload = Column(JSON, nullable=True, comment="Data returned from the api")
 
@@ -111,6 +129,9 @@ class TwitterXPublicMetrics(Base, TimestampMixin):
     __tablename__ = 'twitter_x_public_metrics'
     
     insight_id = Column(UUID, primary_key=True)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     retweet_count = Column(Integer, nullable=True)
     reply_count = Column(Integer, nullable=True)
     like_count = Column(Integer, nullable=True)
@@ -122,6 +143,9 @@ class TwitterXUserMetrics(Base, TimestampMixin):
     __tablename__ = 'twitter_x_user_metrics'
     
     insight_id = Column(UUID, primary_key=True)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     impressions = Column(Integer, nullable=True, default=0, comment="The number of impressions of the post")
     engagements = Column(JSON, nullable=True, comment="The engagements of the post")
     raw_payload = Column(JSON, nullable=True, comment="Data returned from the api")
@@ -130,6 +154,9 @@ class TwitterXMentions(Base, TimestampMixin):
     __tablename__ = 'twitter_x_mentions'
     
     insight_id = Column(UUID, primary_key=True)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     mentions = Column(JSON, nullable=True, comment="The mentions in the post")
     owner = Column(JSON, nullable=True, comment="The owner of the post")
     raw_payload = Column(JSON, nullable=True, comment="Data returned from the api")
@@ -139,6 +166,9 @@ class TwitterXMentions(Base, TimestampMixin):
 class YoutubeChannelReport(Base, TimestampMixin):
     __tablename__ = 'youtube_channel_reports'
     report_id = Column(UUID, primary_key=True, default=uuid.uuid4)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     dimensions = Column(ARRAY(String), nullable=True, comment="The dimension of the report")
     filters = Column(ARRAY(String), nullable=True, comment="The filters of the report")
     result = Column(JSON, nullable=True, comment="The result of the report")
@@ -148,6 +178,9 @@ class YoutubeChannelReport(Base, TimestampMixin):
 class YoutubeContentReport(Base, TimestampMixin):
     __tablename__ = 'youtube_video_reports'
     report_id = Column(UUID, primary_key=True, default=uuid.uuid4)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
+    platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
     dimensions = Column(ARRAY(String), nullable=True, comment="The dimension of the report")
     filters = Column(ARRAY(String), nullable=True, comment="The filters of the report")
     result = Column(JSON, nullable=True, comment="The result of the report")

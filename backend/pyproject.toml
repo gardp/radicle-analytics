@@ -4,8 +4,10 @@ version = "0.1.0"
 dependencies = [
     "fastapi",
     "uvicorn[standard]",
-    "sqlalchemy",
+    "sqlalchemy[asyncio]",
+    "asyncpg",
     "psycopg2-binary",
+    "pydantic-settings",
     "python-dotenv",
     "alembic",
     "notion-client>=3.0.0",

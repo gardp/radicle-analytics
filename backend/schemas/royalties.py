@@ -49,6 +49,7 @@ class RoyaltyBase(BaseModel):
     right: Optional[RoyaltyRight] = None
     royalty: Optional[RoyaltyType] = None
     platform_id: Optional[UUID] = None
+    track_id: Optional[UUID] = None
 
 
 class RoyaltyCreate(RoyaltyBase):
@@ -61,6 +62,7 @@ class RoyaltyUpdate(BaseModel):
     right: Optional[RoyaltyRight] = None
     royalty: Optional[RoyaltyType] = None
     platform_id: Optional[UUID] = None
+    track_id: Optional[UUID] = None
 
 
 class RoyaltyResponse(RoyaltyBase, TimestampMixin):

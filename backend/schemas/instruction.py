@@ -79,7 +79,6 @@ class InstructionBase(BaseModel):
     is_active: Optional[bool] = True
     notes: Optional[str] = None
     platform_id: Optional[UUID] = None
-    track_id: Optional[UUID] = None
     dependency_instruction_id: Optional[UUID] = None
 
 
@@ -100,7 +99,6 @@ class InstructionUpdate(BaseModel):
     is_active: Optional[bool] = None
     notes: Optional[str] = None
     platform_id: Optional[UUID] = None
-    track_id: Optional[UUID] = None
     dependency_instruction_id: Optional[UUID] = None
 
 

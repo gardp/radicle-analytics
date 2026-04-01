@@ -1,0 +1,37 @@
+<!-- ==========================================================================
+     index.html — Application Shell / Entry Point HTML
+     ==========================================================================
+     Purpose:
+       Single-page application (SPA) shell served by Vite during development
+       and included in the production build output. This is the only HTML file
+       in the project; all UI is rendered dynamically by React inside the
+       #root div.
+
+     Key details:
+       - data-bs-theme="dark" enables Bootstrap 5 dark mode globally.
+       - The <script> tag loads src/index.jsx, which bootstraps React.
+       - Vite injects asset hashes and CSS links automatically at build time.
+
+     Dependencies:
+       - Vite (dev server & build tool) — configured in vite.config.js
+       - src/index.jsx — React bootstrap entry point
+
+     Relationship to backend:
+       - The built static files (dist/) are typically served by a reverse
+         proxy or static host. All API calls go to the FastAPI backend at
+         the URL defined by VITE_API_URL (see .env.example).
+     ========================================================================== -->
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radicle Analytics</title>
+  </head>
+  <body>
+    <!-- React mounts the entire component tree inside this div -->
+    <div id="root"></div>
+    <!-- Vite uses ES module loading; src/index.jsx is the React entry point -->
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
+</html>

@@ -43,8 +43,11 @@ class Instruction(Base, TimestampMixin): #can be for both parameters and content
     # Define relationships
     platform_id = Column(UUID(as_uuid=True), ForeignKey("platforms.platform_id"), nullable=True)
     platform = relationship("Platform", back_populates="instructions") #which platform the instruction belongs to
-    track_id = Column(UUID(as_uuid=True), ForeignKey("track.track_id"), nullable=True)
-    track = relationship("Track", back_populates="instructions")
+
+    # One Instruction can spawn many Actions (1:N)
+    actions = relationship("Action", back_populates="instruction")
+
+    frequencies = relationship("Frequency", back_populates="instruction")
 
     # self-referential relationship for dependency
     dependency_instruction_id = Column(UUID(as_uuid=True), ForeignKey("instructions.instruction_id"), nullable=True)
@@ -72,7 +75,7 @@ class Instruction(Base, TimestampMixin): #can be for both parameters and content
         
         # Define relationships
         instruction_id = Column(UUID, ForeignKey("instructions.instruction_id"), nullable=True)
-        instruction = relationship("Instruction", back_populates="frequency")
+        instruction = relationship("Instruction", back_populates="frequencies")
         
 
 class KnowledgeResource(Base, TimestampMixin):

@@ -26,7 +26,6 @@ class Content(Base, TimestampMixin):
     track_id = Column(UUID(as_uuid=True), ForeignKey("track.track_id"), nullable=True)
     
     # Define relationships
-    instructions = relationship("Instruction", back_populates="content")
     actions = relationship("Action", back_populates="content")
     success_metrics = relationship("SuccessMetrics", back_populates="content")
     track = relationship("Track", back_populates="contents")
@@ -164,7 +163,7 @@ class SuccessMetrics(Base):
     content_id = Column(UUID(as_uuid=True), ForeignKey("content.content_id"))
     content = relationship("Content", back_populates="success_metrics")
 
-class Track(Base):
+class Track(Base, TimestampMixin):
     __tablename__ = 'track'
     
     track_id = Column(UUID, primary_key=True, index=True, default=uuid.uuid4)
@@ -190,4 +189,5 @@ class Track(Base):
 
     # Define relationships
     contents = relationship("Content", back_populates="track")
-    instructions = relationship("Instruction", back_populates="track")
+    actions = relationship("Action", back_populates="track")
+    royalties = relationship("Royalty", back_populates="track")

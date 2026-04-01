@@ -3,6 +3,7 @@
 COMPOSE ?= docker-compose
 BACKEND_SERVICE ?= backend
 MSG ?= schema_update
+# COMPOSE ?= docker compose --env-file ./backend/.env.prod
 
 migration-new:
 	$(COMPOSE) exec $(BACKEND_SERVICE) alembic revision --autogenerate -m "$(MSG)"

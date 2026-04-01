@@ -23,7 +23,15 @@ class Action(Base, TimestampMixin):
     action_notes = Column(String, default="")
     feedback = Column(Text, default="")
     
-    # Define relationships for content and instruction
+    # Every Action belongs to a Track (NOT NULL)
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    track = relationship("Track", back_populates="actions")
+
+    # Every Action must originate from an Instruction (NOT NULL)
+    instruction_id = Column(UUID, ForeignKey("instructions.instruction_id"), nullable=False)
+    instruction = relationship("Instruction", back_populates="actions")
+
+    # Content is optional — an Action may or may not involve a specific content piece
     content_id = Column(UUID, ForeignKey("content.content_id"), nullable=True)
     content = relationship("Content", back_populates="actions")
 

@@ -22,7 +22,9 @@ class Royalty(Base, TimestampMixin):
         nullable=True,
     )
     platform_id = Column(UUID, ForeignKey("platforms.platform_id"), nullable=True)
-    platform = relationship("sPlatform", back_populates="royalties")
+    platform = relationship("Platform", back_populates="royalties")
+    track_id = Column(UUID, ForeignKey("track.track_id"), nullable=True)
+    track = relationship("Track", back_populates="royalties")
     royalty_transactions = relationship("RoyaltyTransaction", back_populates="royalty")
 
 class RoyaltyTransaction(Base, TimestampMixin):

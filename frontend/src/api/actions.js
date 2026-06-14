@@ -3,7 +3,7 @@
 // ==========================================================================
 // Purpose:
 //   Provides functions for managing Action entities. Actions represent
-//   tasks or to-do items linked to a Content item within a Track's
+//   tasks or to-do items linking Content and Instruction within a Track's
 //   ecosystem (e.g. "post the Instagram reel", "follow up on feedback").
 //   Each action carries a status (pending, in_progress, completed, failed),
 //   an optional due date, and notes/feedback fields.

@@ -25,11 +25,19 @@ async def list_actions(
     instruction_id: Optional[UUID] = Query(None),
     content_id: Optional[UUID] = Query(None),
     status_filter: Optional[str] = Query(None, alias="status"),
+    # track_is_null — when true, return ONLY actions whose track_id IS NULL.
+    # This is the canonical filter used by the General Parameters → "General
+    # Actions" tab to fetch track-agnostic actions. It is mutually exclusive
+    # with the `track_id` filter (track_id wins if both are supplied).
+    track_is_null: Optional[bool] = Query(None),
     db: AsyncSession = Depends(get_db),
 ):
     stmt = select(Action).order_by(Action.created_at.desc())
     if track_id:
         stmt = stmt.where(Action.track_id == track_id)
+    elif track_is_null:
+        # IS NULL filter for "General Actions" — actions not bound to any track.
+        stmt = stmt.where(Action.track_id.is_(None))
     if instruction_id:
         stmt = stmt.where(Action.instruction_id == instruction_id)
     if content_id:

@@ -3,8 +3,8 @@ services:
     env_file:
       - ./backend/.env
       - ./backend/.env.prod
-    # environment:
-    #   - DATABASE_URL=${SUPABASE_PROD_DB_URL}
+    environment:
+      - DATABASE_URL=${SUPABASE_PROD_DB_URL}
     build: ./backend
     ports:
       - "8000:8000"

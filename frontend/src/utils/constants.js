@@ -108,6 +108,19 @@ export const ACTION_STATUS_VARIANTS = {
 };
 
 // --------------------------------------------------------------------------
+// Action status options — used in the EntityForm select field within
+// ActionModal (General Parameters → General Actions tab) and elsewhere
+// when an Action.status dropdown is needed.
+// Maps to: Action.status column (backend Action model — ActionStatus enum)
+// --------------------------------------------------------------------------
+export const ACTION_STATUS_OPTIONS = [
+  { value: 'pending', label: 'Pending' },
+  { value: 'in_progress', label: 'In Progress' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'failed', label: 'Failed' },
+];
+
+// --------------------------------------------------------------------------
 // Platform type display labels — human-readable names for platform types.
 // Maps to: Platform.type column (backend Platform polymorphic model)
 // Used by: StatusBadge (type="platform")

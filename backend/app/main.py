@@ -26,7 +26,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+print("CORS origins:", [o.strip() for o in settings.CORS_ORIGINS.split(",")])
 app.include_router(api_router)
 
 # GET / - Health check and API information endpoint

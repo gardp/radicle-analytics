@@ -77,7 +77,7 @@ class Instruction(Base, TimestampMixin): #can be for both parameters and content
         instruction_id = Column(UUID, ForeignKey("instructions.instruction_id"), nullable=True)
         instruction = relationship("Instruction", back_populates="frequencies")
         
-
+# Knowledge Resource Model for the knowledge base that the ai model will access
 class KnowledgeResource(Base, TimestampMixin):
     __tablename__ = "knowledge_resources"
     __table_args__ = (

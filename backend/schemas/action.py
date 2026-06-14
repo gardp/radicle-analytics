@@ -24,7 +24,10 @@ class ActionBase(BaseModel):
     action_is_active: Optional[bool] = True
     action_notes: Optional[str] = ""
     feedback: Optional[str] = ""
-    track_id: UUID
+    # track_id is OPTIONAL because "General Actions" (managed under the
+    # General Parameters page) are intentionally track-agnostic and stored
+    # with track_id = NULL. Track-bound actions still set this to a real UUID.
+    track_id: Optional[UUID] = None
     instruction_id: UUID
     content_id: Optional[UUID] = None
     dependency_action_id: Optional[UUID] = None

@@ -1,22 +1,22 @@
-"""Application settings loaded from environment variables."""
+"""Centralized application settings (FastAPI backend).
+
+Provides typed access to runtime configuration so every deployment target
+only needs to supply environment variables once.
+"""
+
+from functools import cached_property
 
 from pydantic_settings import BaseSettings
 
-# local db url: DATABASE_URL: str = "postgresql+asyncpg://localhost:5432/radicle_analytics"
+
 class Settings(BaseSettings):
-    """Runtime configuration injected via environment variables.
- 
-    Attributes:
-        DATABASE_URL: Async SQLAlchemy DSN (Supabase connection string).
-        APP_PASSWORD: Single password required to log into the UI.
-        APP_TOKEN_SECRET: Static bearer token returned after login.
-        FRONTEND_URL: Base URL of the deployed React app (used for docs/meta).
-        CORS_ORIGINS: Comma-separated list of allowed origins.
-    """
-    DATABASE_URL: str = "postgresql+asyncpg://localhost:5432/radicle_analytics"
-    APP_PASSWORD: str = "changeme"
+    """Runtime configuration injected via environment variables."""
+
+    DATABASE_URL: str
+    APP_PASSWORD: str
+    APP_TOKEN_SECRET: str
+    FRONTEND_URL: str = "http://localhost:5173"
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
-    APP_TOKEN_SECRET: str = "radicle-static-token-change-in-production"
 
     @cached_property
     def cors_origin_list(self) -> list[str]:

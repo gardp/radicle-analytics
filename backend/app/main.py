@@ -1,4 +1,4 @@
-from contextlib import asynccontextmanager
+"""FastAPI application bootstrap for Radicle Analytics."""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,16 +7,10 @@ from api import api_router
 from core.config import settings
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    yield
-
-
 app = FastAPI(
     title="Radicle Analytics API",
     description="API for tracking and analyzing Radicle project metrics",
     version="0.1.0",
-    lifespan=lifespan,
 )
 
 app.add_middleware(

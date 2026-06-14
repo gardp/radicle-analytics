@@ -1,0 +1,17 @@
+# render.yaml — declarative Render blueprint for free-tier deployment
+services:
+  - type: web
+    name: radicle-analytics-api
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: |
+      pip install --upgrade pip uv
+      uv pip install --system .
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL          # set in Render dashboard (Supabase URL)
+      - key: APP_PASSWORD
+      - key: APP_TOKEN_SECRET
+      - key: CORS_ORIGINS          # e.g. https://radicle.vercel.app,https://radicle-analytics-api.onrender.com

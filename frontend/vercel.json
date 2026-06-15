@@ -1,5 +1,4 @@
 {
-  "//": "Vercel config for the Radicle Analytics frontend",
   "buildCommand": "npm install && npm run build",
   "outputDirectory": "dist",
   "framework": "vite"

@@ -25,11 +25,57 @@
 // Used by:
 //   - components/ecosystem/EcosystemView.jsx → Content accordion section
 // ==========================================================================
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import StatusBadge from '../shared/StatusBadge';
 
+function SortHeader({ label, sortKey, currentSort, onSort }) {
+  const active = currentSort.key === sortKey;
+  const arrow = active ? (currentSort.dir === 'asc' ? ' ▲' : ' ▼') : '';
+  return (
+    <th
+      style={{ cursor: 'pointer', userSelect: 'none' }}
+      onClick={() => onSort(sortKey)}
+    >
+      {label}{arrow}
+    </th>
+  );
+}
+
 export default function ContentSection({ contents, onSelect, onAdd }) {
+  const [sort, setSort] = useState({ key: 'name', dir: 'asc' });
+
+  const sortedContents = useMemo(() => {
+    if (!contents) return [];
+    const getValue = (item) => {
+      switch (sort.key) {
+        case 'name': return item.name?.toLowerCase() || '';
+        case 'type': return item.type?.toLowerCase() || '';
+        case 'engagement_phase': return item.engagement_phase?.toLowerCase() || '';
+        case 'stats': {
+          const likes = item.likes_count || 0;
+          const shares = item.shares_count || 0;
+          const comments = item.comments_count || 0;
+          return likes + shares + comments;
+        }
+        default: return '';
+      }
+    };
+    return [...contents].sort((a, b) => {
+      const va = getValue(a);
+      const vb = getValue(b);
+      if (va < vb) return sort.dir === 'asc' ? -1 : 1;
+      if (va > vb) return sort.dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [contents, sort]);
+
+  const toggleSort = (key) => {
+    setSort((prev) =>
+      prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' }
+    );
+  };
+
   return (
     <div>
       {onAdd && (
@@ -44,14 +90,14 @@ export default function ContentSection({ contents, onSelect, onAdd }) {
           <Table hover className="align-middle">
             <thead className="table-light">
               <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Engagement Phase</th>
-                <th>Stats</th>
+                <SortHeader label="Name" sortKey="name" currentSort={sort} onSort={toggleSort} />
+                <SortHeader label="Type" sortKey="type" currentSort={sort} onSort={toggleSort} />
+                <SortHeader label="Engagement Phase" sortKey="engagement_phase" currentSort={sort} onSort={toggleSort} />
+                <SortHeader label="Stats" sortKey="stats" currentSort={sort} onSort={toggleSort} />
               </tr>
             </thead>
             <tbody>
-              {(contents || []).map((c) => {
+              {sortedContents.map((c) => {
                 const likes = c.likes_count || 0;
                 const shares = c.shares_count || 0;
                 const comments = c.comments_count || 0;

@@ -23,28 +23,69 @@
 // Used by:
 //   - components/ecosystem/EcosystemView.jsx → Platforms accordion section
 // ==========================================================================
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import StatusBadge from '../shared/StatusBadge';
+
+function SortHeader({ label, sortKey, currentSort, onSort }) {
+  const active = currentSort.key === sortKey;
+  const arrow = active ? (currentSort.dir === 'asc' ? ' ▲' : ' ▼') : '';
+  return (
+    <th
+      style={{ cursor: 'pointer', userSelect: 'none' }}
+      onClick={() => onSort(sortKey)}
+    >
+      {label}{arrow}
+    </th>
+  );
+}
 
 export default function PlatformSection({ platforms, onSelect }) {
   if (!platforms || platforms.length === 0) {
     return <p className="text-muted small">No platforms linked via instructions.</p>;
   }
 
+  const [sort, setSort] = useState({ key: 'name', dir: 'asc' });
+
+  const sortedPlatforms = useMemo(() => {
+    if (!platforms) return [];
+    return [...platforms].sort((a, b) => {
+      const getValue = (item) => {
+        switch (sort.key) {
+          case 'name': return item.name?.toLowerCase() || '';
+          case 'type': return item.type?.toLowerCase() || '';
+          case 'url': return item.url?.toLowerCase() || '';
+          case 'status': return item.is_active === false ? 0 : 1;
+          default: return '';
+        }
+      };
+      const va = getValue(a);
+      const vb = getValue(b);
+      if (va < vb) return sort.dir === 'asc' ? -1 : 1;
+      if (va > vb) return sort.dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [platforms, sort]);
+
+  const toggleSort = (key) => {
+    setSort((prev) =>
+      prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' }
+    );
+  };
+
   return (
     <div className="table-responsive">
       <Table hover className="align-middle">
         <thead className="table-light">
           <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>URL</th>
-            <th>Status</th>
+            <SortHeader label="Name" sortKey="name" currentSort={sort} onSort={toggleSort} />
+            <SortHeader label="Type" sortKey="type" currentSort={sort} onSort={toggleSort} />
+            <SortHeader label="URL" sortKey="url" currentSort={sort} onSort={toggleSort} />
+            <SortHeader label="Status" sortKey="status" currentSort={sort} onSort={toggleSort} />
           </tr>
         </thead>
         <tbody>
-          {platforms.map((p) => (
+          {sortedPlatforms.map((p) => (
             <tr
               key={p.platform_id}
               style={{ cursor: 'pointer' }}

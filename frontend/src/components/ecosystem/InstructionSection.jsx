@@ -25,11 +25,52 @@
 // Used by:
 //   - components/ecosystem/EcosystemView.jsx → Instructions accordion section
 // ==========================================================================
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import StatusBadge from '../shared/StatusBadge';
 
+function SortHeader({ label, sortKey, currentSort, onSort, thStyle }) {
+  const active = currentSort.key === sortKey;
+  const arrow = active ? (currentSort.dir === 'asc' ? ' ▲' : ' ▼') : '';
+  return (
+    <th
+      style={{ cursor: 'pointer', userSelect: 'none', ...thStyle }}
+      onClick={() => onSort(sortKey)}
+    >
+      {label}{arrow}
+    </th>
+  );
+}
+
 export default function InstructionSection({ instructions, onSelect, onAdd }) {
+  const [sort, setSort] = useState({ key: 'name', dir: 'asc' });
+
+  const sortedInstructions = useMemo(() => {
+    if (!instructions) return [];
+    const getValue = (inst) => {
+      switch (sort.key) {
+        case 'name': return inst.name?.toLowerCase() || '';
+        case 'body': return inst.instructions?.toLowerCase() || '';
+        case 'phase': return inst.phase?.toLowerCase() || '';
+        case 'status': return inst.is_active === false ? 0 : 1;
+        default: return '';
+      }
+    };
+    return [...instructions].sort((a, b) => {
+      const va = getValue(a);
+      const vb = getValue(b);
+      if (va < vb) return sort.dir === 'asc' ? -1 : 1;
+      if (va > vb) return sort.dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [instructions, sort]);
+
+  const toggleSort = (key) => {
+    setSort((prev) =>
+      prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' }
+    );
+  };
+
   return (
     <div>
       {onAdd && (
@@ -44,14 +85,20 @@ export default function InstructionSection({ instructions, onSelect, onAdd }) {
           <Table hover className="align-middle">
             <thead className="table-light">
               <tr>
-                <th>Name</th>
-                <th style={{ width: '45%' }}>Instructions</th>
-                <th>Phase</th>
-                <th>Status</th>
+                <SortHeader label="Name" sortKey="name" currentSort={sort} onSort={toggleSort} />
+                <SortHeader
+                  label="Instructions"
+                  sortKey="body"
+                  currentSort={sort}
+                  onSort={toggleSort}
+                  thStyle={{ width: '45%' }}
+                />
+                <SortHeader label="Phase" sortKey="phase" currentSort={sort} onSort={toggleSort} />
+                <SortHeader label="Status" sortKey="status" currentSort={sort} onSort={toggleSort} />
               </tr>
             </thead>
             <tbody>
-              {instructions.map((inst) => (
+              {sortedInstructions.map((inst) => (
                 <tr
                   key={inst.instruction_id}
                   style={{ cursor: 'pointer' }}

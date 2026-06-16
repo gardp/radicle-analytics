@@ -26,23 +26,10 @@
 //   - components/ecosystem/EcosystemView.jsx → Instructions accordion section
 // ==========================================================================
 import React from 'react';
-import { Row, Col, Card, Button } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import StatusBadge from '../shared/StatusBadge';
-// PHASE_LABELS maps phase enum values ("pre","during","post","various") to display text
-import { PHASE_LABELS } from '../../utils/constants';
 
 export default function InstructionSection({ instructions, onSelect, onAdd }) {
-  // Group instructions by their phase for sectioned display
-  const grouped = {};
-  (instructions || []).forEach((inst) => {
-    const phase = inst.phase || 'various';
-    if (!grouped[phase]) grouped[phase] = [];
-    grouped[phase].push(inst);
-  });
-
-  // Render phases in a fixed order: Pre-release → During release → Post-release → Various
-  const phases = ['pre', 'during', 'post', 'various'];
-
   return (
     <div>
       {onAdd && (
@@ -50,44 +37,44 @@ export default function InstructionSection({ instructions, onSelect, onAdd }) {
           <Button variant="outline-primary" size="sm" onClick={onAdd}>+ Add Instruction</Button>
         </div>
       )}
-      {instructions && instructions.length === 0 && (
+      {(!instructions || instructions.length === 0) ? (
         <p className="text-muted small">No instructions for this track.</p>
-      )}
-      {phases.map((phase) => {
-        const items = grouped[phase];
-        if (!items || items.length === 0) return null;
-        return (
-          <div key={phase} className="mb-3">
-            <h6 className="text-muted small fw-bold">{PHASE_LABELS[phase] || phase}</h6>
-            <Row>
-              {items.map((inst) => (
-                <Col md={4} key={inst.instruction_id} className="mb-3">
-                  <Card
-                    className="border-secondary h-100"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => onSelect && onSelect(inst)}
-                  >
-                    <Card.Body>
-                      <div className="d-flex justify-content-between align-items-start mb-1">
-                        <Card.Title className="fs-6 mb-0">{inst.name || 'Untitled'}</Card.Title>
-                        <StatusBadge type="phase" value={inst.phase} />
-                      </div>
-                      {inst.instructions && (
-                        <p className="small text-muted mb-1" style={{ maxHeight: 60, overflow: 'hidden' }}>
-                          {inst.instructions.substring(0, 120)}{inst.instructions.length > 120 ? '...' : ''}
-                        </p>
-                      )}
-                      <div className="small text-muted">
-                        {inst.is_active === false && <StatusBadge type="action" value="failed" />}
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
+      ) : (
+        <div className="table-responsive">
+          <Table hover className="align-middle">
+            <thead className="table-light">
+              <tr>
+                <th>Name</th>
+                <th style={{ width: '45%' }}>Instructions</th>
+                <th>Phase</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {instructions.map((inst) => (
+                <tr
+                  key={inst.instruction_id}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => onSelect && onSelect(inst)}
+                >
+                  <td className="fw-semibold">{inst.name || 'Untitled'}</td>
+                  <td>
+                    <div className="small text-muted" style={{ maxHeight: 72, overflow: 'hidden' }}>
+                      {inst.instructions || '—'}
+                    </div>
+                  </td>
+                  <td><StatusBadge type="phase" value={inst.phase} /></td>
+                  <td>
+                    {inst.is_active === false
+                      ? <span className="text-danger">Inactive</span>
+                      : <span className="text-success">Active</span>}
+                  </td>
+                </tr>
               ))}
-            </Row>
-          </div>
-        );
-      })}
+            </tbody>
+          </Table>
+        </div>
+      )}
     </div>
   );
 }

@@ -25,7 +25,7 @@
 //   - components/ecosystem/EcosystemView.jsx → Actions accordion section
 // ==========================================================================
 import React from 'react';
-import { Row, Col, Card, Button } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import StatusBadge from '../shared/StatusBadge';
 
 export default function ActionSection({ actions, instructions, onSelect, onAdd }) {
@@ -40,37 +40,51 @@ export default function ActionSection({ actions, instructions, onSelect, onAdd }
           <Button variant="outline-primary" size="sm" onClick={onAdd}>+ Add Action</Button>
         </div>
       )}
-      {(!actions || actions.length === 0) && (
+      {(!actions || actions.length === 0) ? (
         <p className="text-muted small">No actions for this track.</p>
+      ) : (
+        <div className="table-responsive">
+          <Table hover className="align-middle">
+            <thead className="table-light">
+              <tr>
+                <th>Status</th>
+                <th>Instruction</th>
+                <th>Due Date</th>
+                <th style={{ width: '45%' }}>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(actions || []).map((a) => (
+                <tr
+                  key={a.action_id}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => onSelect && onSelect(a)}
+                >
+                  <td>
+                    <div className="d-flex flex-column">
+                      <StatusBadge type="action" value={a.status} />
+                      {a.action_is_active === false && (
+                        <span className="small text-danger mt-1">Inactive</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="fw-semibold">{a.instruction_id && instrMap[a.instruction_id] ? instrMap[a.instruction_id] : '—'}</td>
+                  <td className="small text-muted">
+                    {a.next_action_due_date
+                      ? new Date(a.next_action_due_date).toLocaleString()
+                      : '—'}
+                  </td>
+                  <td>
+                    <div className="small text-muted" style={{ maxHeight: 72, overflow: 'hidden' }}>
+                      {a.action_notes || '—'}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       )}
-      <Row>
-        {(actions || []).map((a) => (
-          <Col md={4} key={a.action_id} className="mb-3">
-            <Card
-              className="border-secondary h-100"
-              style={{ cursor: 'pointer' }}
-              onClick={() => onSelect && onSelect(a)}
-            >
-              <Card.Body>
-                <div className="d-flex justify-content-between align-items-start mb-1">
-                  <StatusBadge type="action" value={a.status} />
-                  {a.next_action_due_date && (
-                    <span className="small text-muted">Due: {new Date(a.next_action_due_date).toLocaleDateString()}</span>
-                  )}
-                </div>
-                {a.instruction_id && instrMap[a.instruction_id] && (
-                  <p className="small fw-semibold mb-1 mt-1">{instrMap[a.instruction_id]}</p>
-                )}
-                {a.action_notes && (
-                  <p className="small text-muted mb-0 mt-1" style={{ maxHeight: 50, overflow: 'hidden' }}>
-                    {a.action_notes.substring(0, 100)}{a.action_notes.length > 100 ? '...' : ''}
-                  </p>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
     </div>
   );
 }

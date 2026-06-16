@@ -24,7 +24,7 @@
 //   - components/ecosystem/EcosystemView.jsx → Platforms accordion section
 // ==========================================================================
 import React from 'react';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import StatusBadge from '../shared/StatusBadge';
 
 export default function PlatformSection({ platforms, onSelect }) {
@@ -33,27 +33,47 @@ export default function PlatformSection({ platforms, onSelect }) {
   }
 
   return (
-    <Row>
-      {platforms.map((p) => (
-        <Col md={4} key={p.platform_id} className="mb-3">
-          <Card
-            className="border-secondary h-100"
-            style={{ cursor: 'pointer' }}
-            onClick={() => onSelect && onSelect(p)}
-          >
-            <Card.Body>
-              <div className="d-flex justify-content-between align-items-start">
-                <Card.Title className="fs-6">{p.name}</Card.Title>
-                <StatusBadge type="platform" value={p.type} />
-              </div>
-              {p.url && <a href={p.url} target="_blank" rel="noreferrer" className="small text-info" onClick={e => e.stopPropagation()}>{p.url}</a>}
-              <div className="mt-1">
-                <StatusBadge type="action" value={p.is_active ? 'completed' : 'failed'} />
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      ))}
-    </Row>
+    <div className="table-responsive">
+      <Table hover className="align-middle">
+        <thead className="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>URL</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {platforms.map((p) => (
+            <tr
+              key={p.platform_id}
+              style={{ cursor: 'pointer' }}
+              onClick={() => onSelect && onSelect(p)}
+            >
+              <td className="fw-semibold">{p.name}</td>
+              <td><StatusBadge type="platform" value={p.type} /></td>
+              <td>
+                {p.url ? (
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-info"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {p.url}
+                  </a>
+                ) : '—'}
+              </td>
+              <td>
+                {p.is_active !== false
+                  ? <span className="text-success">Active</span>
+                  : <span className="text-danger">Inactive</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div>
   );
 }

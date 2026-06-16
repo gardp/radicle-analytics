@@ -26,7 +26,7 @@
 //   - components/ecosystem/EcosystemView.jsx → Content accordion section
 // ==========================================================================
 import React from 'react';
-import { Row, Col, Card, Button } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import StatusBadge from '../shared/StatusBadge';
 
 export default function ContentSection({ contents, onSelect, onAdd }) {
@@ -37,40 +37,45 @@ export default function ContentSection({ contents, onSelect, onAdd }) {
           <Button variant="outline-primary" size="sm" onClick={onAdd}>+ Add Content</Button>
         </div>
       )}
-      {(!contents || contents.length === 0) && (
+      {(!contents || contents.length === 0) ? (
         <p className="text-muted small">No content for this track.</p>
+      ) : (
+        <div className="table-responsive">
+          <Table hover className="align-middle">
+            <thead className="table-light">
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Engagement Phase</th>
+                <th>Stats</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(contents || []).map((c) => {
+                const likes = c.likes_count || 0;
+                const shares = c.shares_count || 0;
+                const comments = c.comments_count || 0;
+                return (
+                  <tr
+                    key={c.content_id}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => onSelect && onSelect(c)}
+                  >
+                    <td className="fw-semibold">{c.name || 'Untitled'}</td>
+                    <td><StatusBadge type="content" value={c.type} /></td>
+                    <td className="text-capitalize text-muted">{c.engagement_phase || '—'}</td>
+                    <td className="small text-muted">
+                      <span className="me-3">{likes} likes</span>
+                      <span className="me-3">{shares} shares</span>
+                      <span>{comments} comments</span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </div>
       )}
-      <Row>
-        {(contents || []).map((c) => {
-          const likes = c.likes_count || 0;
-          const shares = c.shares_count || 0;
-          const comments = c.comments_count || 0;
-          return (
-            <Col md={4} key={c.content_id} className="mb-3">
-              <Card
-                className="border-secondary h-100"
-                style={{ cursor: 'pointer' }}
-                onClick={() => onSelect && onSelect(c)}
-              >
-                <Card.Body>
-                  <div className="d-flex justify-content-between align-items-start mb-1">
-                    <Card.Title className="fs-6 mb-0">{c.name || 'Untitled'}</Card.Title>
-                    <StatusBadge type="content" value={c.type} />
-                  </div>
-                  {c.engagement_phase && (
-                    <span className="small text-muted text-capitalize">{c.engagement_phase}</span>
-                  )}
-                  <div className="d-flex gap-3 small text-muted mt-2">
-                    <span>{likes} likes</span>
-                    <span>{shares} shares</span>
-                    <span>{comments} comments</span>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          );
-        })}
-      </Row>
     </div>
   );
 }

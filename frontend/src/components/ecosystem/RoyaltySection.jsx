@@ -23,7 +23,7 @@
 //   - components/ecosystem/EcosystemView.jsx → Royalties accordion section
 // ==========================================================================
 import React from 'react';
-import { Row, Col, Card, Button } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 
 export default function RoyaltySection({ royalties, onSelect, onAdd }) {
   return (
@@ -33,25 +33,32 @@ export default function RoyaltySection({ royalties, onSelect, onAdd }) {
           <Button variant="outline-primary" size="sm" onClick={onAdd}>+ Add Royalty</Button>
         </div>
       )}
-      {(!royalties || royalties.length === 0) && (
+      {(!royalties || royalties.length === 0) ? (
         <p className="text-muted small">No royalties for this track.</p>
+      ) : (
+        <div className="table-responsive">
+          <Table hover className="align-middle">
+            <thead className="table-light">
+              <tr>
+                <th>Right</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(royalties || []).map((r) => (
+                <tr
+                  key={r.royalty_id}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => onSelect && onSelect(r)}
+                >
+                  <td className="fw-semibold">{r.right || 'Royalty'}</td>
+                  <td className="text-muted">{r.royalty || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       )}
-      <Row>
-        {(royalties || []).map((r) => (
-          <Col md={4} key={r.royalty_id} className="mb-3">
-            <Card
-              className="border-secondary h-100"
-              style={{ cursor: 'pointer' }}
-              onClick={() => onSelect && onSelect(r)}
-            >
-              <Card.Body>
-                <Card.Title className="fs-6">{r.right || 'Royalty'}</Card.Title>
-                <span className="small text-muted">{r.royalty || '—'}</span>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
     </div>
   );
 }
